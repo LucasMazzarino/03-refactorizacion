@@ -1,8 +1,8 @@
 package src.booking.Interface;
 
 
-import booking.Models.Reserva;
-import booking.Services.AlojamientoService;
+import src.booking.Models.Reserva;
+import src.booking.Services.AlojamientoService;
 
 import java.util.List;
 import java.util.Scanner;

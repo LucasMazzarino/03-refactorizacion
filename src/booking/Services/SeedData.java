@@ -1,7 +1,6 @@
 package src.booking.Services;
 
-import booking.Models.*;
-
+import src.booking.Models.*;
 import java.util.ArrayList;
 import java.util.List;
 

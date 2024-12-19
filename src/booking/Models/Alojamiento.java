@@ -1,6 +1,5 @@
 package src.booking.Models;
 
-import booking.Interface.IReserva;
 import java.util.ArrayList;
 import java.util.List;
 

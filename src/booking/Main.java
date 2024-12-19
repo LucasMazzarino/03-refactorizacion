@@ -1,7 +1,7 @@
 package src.booking;
 
-import booking.Services.AlojamientoService;
-import booking.Services.ReservaService;
+import src.booking.Services.AlojamientoService;
+import src.booking.Services.ReservaService;
 
 import java.util.Scanner;
 
