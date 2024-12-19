@@ -1,5 +1,6 @@
 package src.booking.Services;
 
+import src.booking.Interface.IReserva;
 import src.booking.Models.Alojamiento;
 import src.booking.Models.Cliente;
 import src.booking.Models.Habitacion;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class ReservaService extends ReservaControler {
+public class ReservaService extends ReservaControler implements IReserva {
     private List<Reserva> reservas;
 
     public ReservaService(List<Alojamiento> alojamientos) {
