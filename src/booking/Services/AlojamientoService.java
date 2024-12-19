@@ -25,38 +25,12 @@ public class AlojamientoService {
         return resultados;
     }
 
-    public void buscarHotel(Scanner scanner) {
+
+    public void buscarHotel(Scanner scanner, String ciudad, String tipoAlojamiento) {
         List<Alojamiento> alojamientos = SeedData.createAlojamientos();
-        List<String> ciudades = alojamientos.stream().map(Alojamiento::getCiudad).distinct().collect(Collectors.toList());
-        List<String> tiposAlojamiento = List.of("Hotel", "Apartamento", "Finca", "DiaDeSol");
-
-        System.out.println("Seleccione una ciudad:");
-        for (int i = 0; i < ciudades.size(); i++) {
-            System.out.println((i + 1) + ". " + ciudades.get(i));
-        }
-        int ciudadIndex = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume newline
-        if (ciudadIndex < 0 || ciudadIndex >= ciudades.size()) {
-            System.out.println("Opción no válida.");
-            return;
-        }
-        String ciudad = ciudades.get(ciudadIndex);
-
-        System.out.println("Seleccione el tipo de alojamiento:");
-        for (int i = 0; i < tiposAlojamiento.size(); i++) {
-            System.out.println((i + 1) + ". " + tiposAlojamiento.get(i));
-        }
-        int tipoIndex = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume newline
-        if (tipoIndex < 0 || tipoIndex >= tiposAlojamiento.size()) {
-            System.out.println("Opción no válida.");
-            return;
-        }
-        String tipoAlojamiento = tiposAlojamiento.get(tipoIndex);
 
         if (tipoAlojamiento.equalsIgnoreCase("DiaDeSol")) {
             List<Hotel> diaDeSolHoteles = DiaDeSol.buscarHotelesConDiaDeSol(alojamientos, ciudad);
-
             if (diaDeSolHoteles.isEmpty()) {
                 System.out.println("No hay hoteles que ofrezcan DiaDeSol.");
             } else {
@@ -73,35 +47,45 @@ public class AlojamientoService {
             return;
         }
 
-        LocalDate inicio = null;
-        LocalDate fin = null;
-        while (true) {
-            try {
-                System.out.println("Ingrese la fecha de inicio (YYYY-MM-DD):");
-                inicio = LocalDate.parse(scanner.nextLine());
-                System.out.println("Ingrese la fecha de fin (YYYY-MM-DD):");
-                fin = LocalDate.parse(scanner.nextLine());
-                if (fin.isBefore(inicio)) {
-                    System.out.println("La fecha de fin no puede ser anterior a la fecha de inicio. Intente de nuevo.");
-                } else {
-                    break;
-                }
-            } catch (DateTimeParseException e) {
-                System.out.println("Formato de fecha no válido. Intente de nuevo.");
-            }
-        }
+        LocalDate[] fechas = obtenerFechas(scanner);
+        int[] cantidades = obtenerCantidades(scanner);
 
+        List<Alojamiento> resultados = buscarAlojamientos(ciudad, tipoAlojamiento, fechas[0], fechas[1], cantidades[0], cantidades[1], cantidades[2]);
+        for (Alojamiento alojamiento : resultados) {
+            System.out.println(alojamiento);
+        }
+    }
+
+    private LocalDate[] obtenerFechas(Scanner scanner) {
+    LocalDate inicio = null;
+    LocalDate fin = null;
+    while (true) {
+        try {
+            System.out.println("Ingrese la fecha de inicio (YYYY-MM-DD):");
+            inicio = LocalDate.parse(scanner.nextLine());
+            System.out.println("Ingrese la fecha de fin (YYYY-MM-DD):");
+            fin = LocalDate.parse(scanner.nextLine());
+            if (fin.isBefore(inicio)) {
+                System.out.println("La fecha de fin no puede ser anterior a la fecha de inicio. Intente de nuevo.");
+            } else {
+                break;
+            }
+        } catch (DateTimeParseException e) {
+            System.out.println("Formato de fecha no válido. Intente de nuevo.");
+        }
+    }
+    return new LocalDate[]{inicio, fin};
+}
+
+    private int[] obtenerCantidades(Scanner scanner) {
         System.out.println("Ingrese la cantidad de adultos:");
         int cantAdultos = scanner.nextInt();
         System.out.println("Ingrese la cantidad de niños:");
         int cantNinos = scanner.nextInt();
         System.out.println("Ingrese la cantidad de habitaciones:");
         int cantHabitaciones = scanner.nextInt();
-
-        List<Alojamiento> resultados = buscarAlojamientos(ciudad, tipoAlojamiento, inicio, fin, cantAdultos, cantNinos, cantHabitaciones);
-        for (Alojamiento alojamiento : resultados) {
-            System.out.println(alojamiento);
-        }
+        scanner.nextLine(); // Consume newline
+        return new int[]{cantAdultos, cantNinos, cantHabitaciones};
     }
 
     public void buscarDisponibilidad(Scanner scanner) {
@@ -125,36 +109,11 @@ public class AlojamientoService {
         }
 
         Alojamiento alojamiento = alojamientos.get(alojamientoIndex);
+        LocalDate[] fechas = obtenerFechas(scanner);
+        int[] cantidades = obtenerCantidades(scanner);
 
-        LocalDate inicio = null;
-        LocalDate fin = null;
-        while (true) {
-            try {
-                System.out.println("Ingrese la fecha de inicio (YYYY-MM-DD):");
-                inicio = LocalDate.parse(scanner.nextLine());
-                System.out.println("Ingrese la fecha de fin (YYYY-MM-DD):");
-                fin = LocalDate.parse(scanner.nextLine());
-                if (fin.isBefore(inicio)) {
-                    System.out.println("La fecha de fin no puede ser anterior a la fecha de inicio. Intente de nuevo.");
-                } else {
-                    break;
-                }
-            } catch (DateTimeParseException e) {
-                System.out.println("Formato de fecha no válido. Intente de nuevo.");
-            }
-        }
-
-        System.out.println("Ingrese la cantidad de adultos:");
-        int cantAdultos = scanner.nextInt();
-        System.out.println("Ingrese la cantidad de niños:");
-        int cantNinos = scanner.nextInt();
-        System.out.println("Ingrese la cantidad de habitaciones:");
-        int cantHabitaciones = scanner.nextInt();
-
-        LocalDate finalInicio = inicio;
-        LocalDate finalFin = fin;
         List<Habitacion> habitacionesDisponibles = alojamiento.getHabitaciones().stream()
-                .filter(h -> h.getReservas().stream().noneMatch(r -> r.getEntrada().isBefore(finalFin) && r.getSalida().isAfter(finalInicio)))
+                .filter(h -> h.getReservas().stream().noneMatch(r -> r.getEntrada().isBefore(fechas[1]) && r.getSalida().isAfter(fechas[0])))
                 .collect(Collectors.toList());
 
         if (habitacionesDisponibles.isEmpty()) {

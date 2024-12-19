@@ -19,53 +19,12 @@ public class Cliente {
         this.cumpleanos = cumpleanos;
     }
 
-    // Getters and setters
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
+    // Elimine los geter y seters no utizados.
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNacionalidad() {
-        return nacionalidad;
-    }
-
-    public void setNacionalidad(String nacionalidad) {
-        this.nacionalidad = nacionalidad;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public LocalDate getCumpleanos() {
         return cumpleanos;
-    }
-
-    public void setCumpleanos(LocalDate cumpleanos) {
-        this.cumpleanos = cumpleanos;
     }
 }

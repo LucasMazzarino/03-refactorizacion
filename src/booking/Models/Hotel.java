@@ -12,9 +12,9 @@ public class Hotel extends Alojamiento {
         return diaDeSol;
     }
 
-    public void setDiaDeSol(DiaDeSol diaDeSol) {
-        this.diaDeSol = diaDeSol;
-    }
+//    public void setDiaDeSol(DiaDeSol diaDeSol) {
+//        this.diaDeSol = diaDeSol;
+//    }
 
     @Override
     public double calcularCosto(int[] dias, int cantHabitaciones) {

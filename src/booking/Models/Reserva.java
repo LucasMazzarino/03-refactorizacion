@@ -8,9 +8,9 @@ public class Reserva {
     private LocalDate entrada;
     private LocalDate salida;
     private String horaLlegada;
-    private int cantNinos;
-    private int cantAdultos;
-    private int cantHabitaciones;
+    private Integer cantNinos;
+    private Integer cantAdultos;
+    private Integer cantHabitaciones;
     private Alojamiento alojamiento;
 
     public Reserva(Cliente cliente, Habitacion habitacion,Alojamiento alojamiento, LocalDate entrada, LocalDate salida, String horaLlegada, int cantNinos, int cantAdultos, int cantHabitaciones) {
@@ -37,10 +37,6 @@ public class Reserva {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
     public Habitacion getHabitacion() {
         return habitacion;
     }
@@ -65,36 +61,8 @@ public class Reserva {
         this.salida = salida;
     }
 
-    public String getHoraLlegada() {
-        return horaLlegada;
-    }
-
-    public void setHoraLlegada(String horaLlegada) {
-        this.horaLlegada = horaLlegada;
-    }
-
-    public int getCantNinos() {
-        return cantNinos;
-    }
-
-    public void setCantNinos(int cantNinos) {
-        this.cantNinos = cantNinos;
-    }
-
-    public int getCantAdultos() {
-        return cantAdultos;
-    }
-
-    public void setCantAdultos(int cantAdultos) {
-        this.cantAdultos = cantAdultos;
-    }
-
     public int getCantHabitaciones() {
         return cantHabitaciones;
-    }
-
-    public void setCantHabitaciones(int cantHabitaciones) {
-        this.cantHabitaciones = cantHabitaciones;
     }
 
     @Override

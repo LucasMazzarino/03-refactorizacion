@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DiaDeSol {
     private String ubicacion;
-    private double costoPorPersona;
+    private Double costoPorPersona;
     private String actividades;
 
     public DiaDeSol(String ubicacion, double costoPorPersona, String actividades) {
@@ -18,24 +18,12 @@ public class DiaDeSol {
         return ubicacion;
     }
 
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
     public double getCostoPorPersona() {
         return costoPorPersona;
     }
 
-    public void setCostoPorPersona(double costoPorPersona) {
-        this.costoPorPersona = costoPorPersona;
-    }
-
     public String getActividades() {
         return actividades;
-    }
-
-    public void setActividades(String actividades) {
-        this.actividades = actividades;
     }
 
     @Override
