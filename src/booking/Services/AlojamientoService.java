@@ -1,16 +1,54 @@
 package src.booking.Services;
 
-import src.booking.Models.*;
+import src.booking.Models.Alojamiento;
+import src.booking.Models.Habitacion;
+import src.booking.Repository.AlojamientoRepository;
+import src.booking.Utils.AlojamientoUtils;
+import src.booking.Utils.ClienteUtils;
+import src.booking.Utils.FechasUtils;
+import src.booking.Utils.HabitacionUtils;
+
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class AlojamientoService {
-    public List<Alojamiento> buscarAlojamientos(String ciudad, String tipoAlojamiento, LocalDate inicio, LocalDate fin, int cantAdultos, int cantNinos, int cantHabitaciones) {
-        List<Alojamiento> alojamientos = SeedData.createAlojamientos();
+
+    public void buscarHotel(Scanner scanner, String ciudad, String tipoAlojamiento) {
+        List<Alojamiento> alojamientos = AlojamientoRepository.getInstancia().getAlojamientos();
+
+        if (tipoAlojamiento.equalsIgnoreCase("DiaDeSol")) {
+            AlojamientoUtils.mostrarHotelesConDiaDeSol(alojamientos, ciudad);
+            return;
+        }
+
+        LocalDate[] fechas = FechasUtils.obtenerFechas(scanner);
+        int[] cantidades = ClienteUtils.obtenerCantidades(scanner);
+
+        List<Alojamiento> resultados = buscarAlojamientos(ciudad, tipoAlojamiento, fechas[0], fechas[1], cantidades[0], cantidades[1], cantidades[2]);
+        AlojamientoUtils.mostrarAlojamientos(resultados);
+    }
+
+    public void buscarDisponibilidad(Scanner scanner) {
+        List<Alojamiento> alojamientos = AlojamientoRepository.getInstancia().getAlojamientos();
+
+        if (alojamientos.isEmpty()) {
+            System.out.println("No hay alojamientos disponibles.");
+            return;
+        }
+
+        Alojamiento alojamiento = AlojamientoUtils.seleccionarAlojamiento(scanner, alojamientos);
+        if (alojamiento == null) return;
+
+        LocalDate[] fechas = FechasUtils.obtenerFechas(scanner);
+        List<Habitacion> habitacionesDisponibles = AlojamientoUtils.obtenerHabitacionesDisponibles(alojamiento, fechas);
+
+        AlojamientoUtils.mostrarHabitacionesDisponibles(habitacionesDisponibles);
+    }
+
+    private List<Alojamiento> buscarAlojamientos(String ciudad, String tipoAlojamiento, LocalDate inicio, LocalDate fin, int cantAdultos, int cantNinos, int cantHabitaciones) {
+        List<Alojamiento> alojamientos = AlojamientoRepository.getInstancia().getAlojamientos();
         List<Alojamiento> resultados = new ArrayList<>();
 
         for (Alojamiento alojamiento : alojamientos) {
@@ -23,106 +61,5 @@ public class AlojamientoService {
         }
 
         return resultados;
-    }
-
-
-    public void buscarHotel(Scanner scanner, String ciudad, String tipoAlojamiento) {
-        List<Alojamiento> alojamientos = SeedData.createAlojamientos();
-
-        if (tipoAlojamiento.equalsIgnoreCase("DiaDeSol")) {
-            List<Hotel> diaDeSolHoteles = DiaDeSol.buscarHotelesConDiaDeSol(alojamientos, ciudad);
-            if (diaDeSolHoteles.isEmpty()) {
-                System.out.println("No hay hoteles que ofrezcan DiaDeSol.");
-            } else {
-                System.out.println("Hoteles que ofrecen DiaDeSol:");
-                for (Hotel hotel : diaDeSolHoteles) {
-                    DiaDeSol diaDeSol = hotel.getDiaDeSol();
-                    System.out.println("Nombre: " + hotel.getNombre());
-                    System.out.println("Ubicación: " + diaDeSol.getUbicacion());
-                    System.out.println("Precio: " + diaDeSol.getCostoPorPersona());
-                    System.out.println("Actividades: " + diaDeSol.getActividades());
-                    System.out.println();
-                }
-            }
-            return;
-        }
-
-        LocalDate[] fechas = obtenerFechas(scanner);
-        int[] cantidades = obtenerCantidades(scanner);
-
-        List<Alojamiento> resultados = buscarAlojamientos(ciudad, tipoAlojamiento, fechas[0], fechas[1], cantidades[0], cantidades[1], cantidades[2]);
-        for (Alojamiento alojamiento : resultados) {
-            System.out.println(alojamiento);
-        }
-    }
-
-    private LocalDate[] obtenerFechas(Scanner scanner) {
-    LocalDate inicio = null;
-    LocalDate fin = null;
-    while (true) {
-        try {
-            System.out.println("Ingrese la fecha de inicio (YYYY-MM-DD):");
-            inicio = LocalDate.parse(scanner.nextLine());
-            System.out.println("Ingrese la fecha de fin (YYYY-MM-DD):");
-            fin = LocalDate.parse(scanner.nextLine());
-            if (fin.isBefore(inicio)) {
-                System.out.println("La fecha de fin no puede ser anterior a la fecha de inicio. Intente de nuevo.");
-            } else {
-                break;
-            }
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de fecha no válido. Intente de nuevo.");
-        }
-    }
-    return new LocalDate[]{inicio, fin};
-}
-
-    private int[] obtenerCantidades(Scanner scanner) {
-        System.out.println("Ingrese la cantidad de adultos:");
-        int cantAdultos = scanner.nextInt();
-        System.out.println("Ingrese la cantidad de niños:");
-        int cantNinos = scanner.nextInt();
-        System.out.println("Ingrese la cantidad de habitaciones:");
-        int cantHabitaciones = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        return new int[]{cantAdultos, cantNinos, cantHabitaciones};
-    }
-
-    public void buscarDisponibilidad(Scanner scanner) {
-        List<Alojamiento> alojamientos = SeedData.createAlojamientos();
-
-        if (alojamientos.isEmpty()) {
-            System.out.println("No hay alojamientos disponibles.");
-            return;
-        }
-
-        System.out.println("Seleccione un alojamiento:");
-        for (int i = 0; i < alojamientos.size(); i++) {
-            System.out.println((i + 1) + ". " + alojamientos.get(i).getNombre() + " (" + alojamientos.get(i).getClass().getSimpleName() + ")");
-        }
-
-        int alojamientoIndex = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume newline
-        if (alojamientoIndex < 0 || alojamientoIndex >= alojamientos.size()) {
-            System.out.println("Opción no válida.");
-            return;
-        }
-
-        Alojamiento alojamiento = alojamientos.get(alojamientoIndex);
-        LocalDate[] fechas = obtenerFechas(scanner);
-        int[] cantidades = obtenerCantidades(scanner);
-
-        List<Habitacion> habitacionesDisponibles = alojamiento.getHabitaciones().stream()
-                .filter(h -> h.getReservas().stream().noneMatch(r -> r.getEntrada().isBefore(fechas[1]) && r.getSalida().isAfter(fechas[0])))
-                .collect(Collectors.toList());
-
-        if (habitacionesDisponibles.isEmpty()) {
-            System.out.println("No hay habitaciones disponibles para las fechas seleccionadas.");
-        } else {
-            System.out.println("Habitaciones disponibles:");
-            for (Habitacion habitacion : habitacionesDisponibles) {
-                System.out.println(habitacion);
-            }
-        }
     }
 }

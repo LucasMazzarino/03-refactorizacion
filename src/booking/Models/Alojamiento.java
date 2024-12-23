@@ -28,6 +28,10 @@ public abstract class Alojamiento  {
         return habitaciones;
     }
 
+    public void setHabitaciones(List<Habitacion> habitaciones) {
+        this.habitaciones = habitaciones;
+    }
+
     public String getCiudad() {
         return ciudad;
     }

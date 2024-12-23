@@ -12,8 +12,9 @@ public class Habitacion {
     private Integer cantAdultos;
     private Integer cantidadDisponible;
     private List<Reserva> reservas;
+    private Alojamiento alojamiento;
 
-    public Habitacion(TipoHabitacion tipo, double tarifaPorNoche, String detalles, int diasDelMes, int cantNinos, int cantAdultos, int cantidadDisponible) {
+    public Habitacion(TipoHabitacion tipo, double tarifaPorNoche, String detalles, int diasDelMes, int cantNinos, int cantAdultos, int cantidadDisponible, Alojamiento alojamiento) {
         this.tipo = tipo;
         this.tarifaPorNoche = tarifaPorNoche;
         this.detalles = detalles;
@@ -22,6 +23,22 @@ public class Habitacion {
         this.cantAdultos = cantAdultos;
         this.cantidadDisponible = cantidadDisponible;
         this.reservas = new ArrayList<>();
+        this.alojamiento = alojamiento;
+    }
+
+    public void setAlojamiento(Alojamiento alojamiento) {
+        this.alojamiento = alojamiento;
+    }
+    public Alojamiento getAlojamiento() {
+        return alojamiento;
+    }
+
+    public TipoHabitacion getTipo() {
+        return tipo;
+    }
+
+    public String getDetalles() {
+        return detalles;
     }
 
     public double getTarifaPorNoche() {

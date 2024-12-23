@@ -20,7 +20,6 @@ public class SeedData {
         Finca finca2 = new Finca("Finca Maldonado", "Detalles de la Finca B", "Maldonado", 4.0);
         Finca finca3 = new Finca("Finca Rocha", "Detalles de la Finca C", "Rocha", 3.5);
 
-
         Apartamento apartamento1 = new Apartamento("Apartamento Monteveideo", "Detalles del Apartamento A", "Montevideo", 4.5);
         Apartamento apartamento2 = new Apartamento("Apartamento Maldonado", "Detalles del Apartamento B", "Maldonado", 4.0);
         Apartamento apartamento3 = new Apartamento("Apartamento Rocha", "Detalles del Apartamento C", "Rocha", 3.5);
@@ -49,10 +48,10 @@ public class SeedData {
     }
 
     private static void addHabitaciones(Alojamiento alojamiento) {
-        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.COMUN, 100, "Habitación común", 30, 2, 2, 10));
-        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.DOBLE, 150, "Habitación doble", 30, 2, 2, 15));
-        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.PREMIUM, 200, "Habitación premium", 30, 2, 2, 20));
-        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.ESTRELLA, 250, "Habitación estrella", 30, 2, 2, 20));
-        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.SUIT, 300, "Habitación suit", 30, 2, 2, 5));
+        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.COMUN, 100, "Habitación común", 30, 2, 2, 10, alojamiento));
+        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.DOBLE, 150, "Habitación doble", 30, 2, 2, 15, alojamiento));
+        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.PREMIUM, 200, "Habitación premium", 30, 2, 2, 20, alojamiento));
+        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.ESTRELLA, 250, "Habitación estrella", 30, 2, 2, 20, alojamiento));
+        alojamiento.getHabitaciones().add(new Habitacion(TipoHabitacion.SUIT, 300, "Habitación suit", 30, 2, 2, 5, alojamiento));
     }
 }

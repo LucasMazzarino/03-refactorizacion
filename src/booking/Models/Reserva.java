@@ -68,14 +68,16 @@ public class Reserva {
     @Override
     public String toString() {
         return "Reserva{" +
-                "cliente=" + cliente +
-                ", habitacion=" + habitacion +
-                ", entrada=" + entrada +
-                ", salida=" + salida +
-                ", horaLlegada='" + horaLlegada + '\'' +
-                ", cantNinos=" + cantNinos +
-                ", cantAdultos=" + cantAdultos +
-                ", cantHabitaciones=" + cantHabitaciones +
-                '}';
+                " cliente :" + cliente.getNombre() + " " + cliente.getApellido() +
+                ", habitacion :" + habitacion.getTipo() +
+                ", tarifaPorNoche :" + habitacion.getTarifaPorNoche() +
+                ", detalles :" + habitacion.getDetalles() +'\n' +
+                ", cantidadDisponible :" + habitacion.getCantidadDisponible() +
+                ", entrada :" + entrada +
+                ", salida :" + salida +
+                ", horaLlegada :'" + horaLlegada +
+                ", cantNinos :" + cantNinos +
+                ", cantAdultos :" + cantAdultos +
+                ", cantHabitaciones :" + cantHabitaciones ;
     }
 }
