@@ -7,38 +7,58 @@ public class Finca extends Alojamiento {
 
     @Override
     public double calcularCosto(int[] dias, int cantHabitaciones) {
-        double costoTotal = 0;
-        double tarifaPorNoche = getHabitaciones().stream()
+        double tarifaPorNoche = obtenerTarifaMinimaPorNoche();
+        double costoTotal = calcularCostoBase(tarifaPorNoche, dias.length, cantHabitaciones);
+        double factorAjuste = obtenerFactorAjuste(dias);
+        return costoTotal * factorAjuste;
+    }
+
+    private double obtenerTarifaMinimaPorNoche() {
+        return getHabitaciones().stream()
                 .mapToDouble(Habitacion::getTarifaPorNoche)
                 .min()
                 .orElse(0);
+    }
 
-        costoTotal = tarifaPorNoche * dias.length * cantHabitaciones;
+    private double calcularCostoBase(double tarifaPorNoche, int cantidadDias, int cantHabitaciones) {
+        return tarifaPorNoche * cantidadDias * cantHabitaciones;
+    }
 
-        boolean ultimoCincoDias = false;
-        boolean diezAlQuince = false;
-        boolean cincoAlDiez = false;
+    private double obtenerFactorAjuste(int[] dias) {
+        if (esUltimosCincoDias(dias)) {
+            return 1.15;
+        } else if (esDiezAlQuince(dias)) {
+            return 1.10;
+        } else if (esCincoAlDiez(dias)) {
+            return 0.92;
+        }
+        return 1.0;
+    }
 
+    private boolean esUltimosCincoDias(int[] dias) {
         for (int dia : dias) {
             if (dia > 25) {
-                ultimoCincoDias = true;
+                return true;
             }
+        }
+        return false;
+    }
+
+    private boolean esDiezAlQuince(int[] dias) {
+        for (int dia : dias) {
             if (dia >= 10 && dia <= 15) {
-                diezAlQuince = true;
+                return true;
             }
+        }
+        return false;
+    }
+
+    private boolean esCincoAlDiez(int[] dias) {
+        for (int dia : dias) {
             if (dia >= 5 && dia <= 10) {
-                cincoAlDiez = true;
+                return true;
             }
         }
-
-        if (ultimoCincoDias) {
-            costoTotal *= 1.15;
-        } else if (diezAlQuince) {
-            costoTotal *= 1.10;
-        } else if (cincoAlDiez) {
-            costoTotal *= 0.92;
-        }
-
-        return costoTotal;
+        return false;
     }
 }

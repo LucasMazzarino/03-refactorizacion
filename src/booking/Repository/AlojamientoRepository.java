@@ -24,7 +24,4 @@ public class AlojamientoRepository {
         return alojamientos;
     }
 
-    public void setAlojamientos(List<Alojamiento> alojamientos) {
-        AlojamientoRepository.alojamientos = alojamientos;
-    }
 }

@@ -33,11 +33,6 @@ public class AlojamientoService {
     public void buscarDisponibilidad(Scanner scanner) {
         List<Alojamiento> alojamientos = AlojamientoRepository.getInstancia().getAlojamientos();
 
-        if (alojamientos.isEmpty()) {
-            System.out.println("No hay alojamientos disponibles.");
-            return;
-        }
-
         Alojamiento alojamiento = AlojamientoUtils.seleccionarAlojamiento(scanner, alojamientos);
         if (alojamiento == null) return;
 

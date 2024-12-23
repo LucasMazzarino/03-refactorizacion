@@ -28,10 +28,6 @@ public abstract class Alojamiento  {
         return habitaciones;
     }
 
-    public void setHabitaciones(List<Habitacion> habitaciones) {
-        this.habitaciones = habitaciones;
-    }
-
     public String getCiudad() {
         return ciudad;
     }
@@ -48,10 +44,6 @@ public abstract class Alojamiento  {
         sb.append("Estrellas: ").append(estrellas).append(" estrellas\n");
         sb.append("Detalles: ").append(detalles).append("\n");
         sb.append("Habitaciones:\n");
-        for (Habitacion habitacion : habitaciones) {
-            sb.append("  - ").append(habitacion).append("\n");
-        }
-        sb.append("Reservas: ").append(reservas.isEmpty() ? "No hay reservas" : reservas).append("\n");
         return sb.toString();
     }
 

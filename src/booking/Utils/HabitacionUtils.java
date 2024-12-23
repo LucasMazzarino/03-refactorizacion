@@ -25,16 +25,8 @@ public class HabitacionUtils {
         List<Habitacion> habitacionesDisponibles = HabitacionOperacionesUtils.obtenerHabitacionesDisponibles(reserva.getAlojamiento());
         HabitacionOperacionesUtils.mostrarHabitaciones(habitacionesDisponibles);
 
-        Integer nuevaHabitacionIndex = validarHabitacionIndex(scanner, habitacionesDisponibles);
-        if (nuevaHabitacionIndex == null) return;
-
-        actualizarReserva(reserva, habitacionesDisponibles.get(nuevaHabitacionIndex));
-    }
-
-    private static Integer validarHabitacionIndex(Scanner scanner, List<Habitacion> habitacionesDisponibles) {
         Integer nuevaHabitacionIndex = HabitacionOperacionesUtils.obtenerIndiceHabitacion(scanner, habitacionesDisponibles);
-        if (nuevaHabitacionIndex == null) return null;
-        return nuevaHabitacionIndex;
+        actualizarReserva(reserva, habitacionesDisponibles.get(nuevaHabitacionIndex));
     }
 
     private static Reserva obtenerReserva(Scanner scanner, String email) {

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MenuUtils {
 
@@ -43,7 +44,7 @@ public class MenuUtils {
         System.out.println("5. Salir");
 
         int opcion = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine();
 
         Consumer<Scanner> action = menuOptions.get(opcion);
         if (action != null) {
@@ -56,30 +57,19 @@ public class MenuUtils {
     private static String seleccionarCiudad(Scanner scanner, List<Alojamiento> alojamientos) {
         List<String> ciudades = alojamientos.stream().map(Alojamiento::getCiudad).distinct().collect(Collectors.toList());
         System.out.println("Seleccione una ciudad:");
-        for (int i = 0; i < ciudades.size(); i++) {
-            System.out.println((i + 1) + ". " + ciudades.get(i));
-        }
+        IntStream.range(0, ciudades.size()).forEach(i -> System.out.println((i + 1) + ". " + ciudades.get(i)));
         int ciudadIndex = scanner.nextInt() - 1;
         scanner.nextLine();
-        return validarIndice(ciudadIndex, ciudades.size()) ? ciudades.get(ciudadIndex) : null;
+        return ciudades.get(ciudadIndex);
     }
 
     private static String seleccionarTipoAlojamiento(Scanner scanner) {
         List<String> tiposAlojamiento = List.of("Hotel", "Apartamento", "Finca", "DiaDeSol");
         System.out.println("Seleccione el tipo de alojamiento:");
-        for (int i = 0; i < tiposAlojamiento.size(); i++) {
-            System.out.println((i + 1) + ". " + tiposAlojamiento.get(i));
-        }
+        IntStream.range(0, tiposAlojamiento.size()).forEach(i -> System.out.println((i + 1) + ". " + tiposAlojamiento.get(i)));
         int tipoIndex = scanner.nextInt() - 1;
         scanner.nextLine();
-        return validarIndice(tipoIndex, tiposAlojamiento.size()) ? tiposAlojamiento.get(tipoIndex) : null;
+        return tiposAlojamiento.get(tipoIndex);
     }
 
-    private static boolean validarIndice(int index, int size) {
-        if (index < 0 || index >= size) {
-            System.out.println("Opción no válida.");
-            return false;
-        }
-        return true;
-    }
 }
